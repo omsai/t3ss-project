@@ -26,8 +26,8 @@ if __name__ == '__main__':
     blastp_file = '../data/analyze-input/all.faa.blastp'
     df = blastp_output(blastp_file)
     # Filter by evalue
-    df= df[df['evalue'] < 1e-5]
+    df_filtered = df[df['evalue'] < 1e-5]
     # Filter by max bit score in each group
-    grouped = df.groupby('query id')
+    grouped = df_filtered.groupby('query id')
     max_idx = grouped['bit score'].idxmax().values
-    df = df.iloc[max_idx]
+    df_max = df.iloc[max_idx]
