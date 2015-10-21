@@ -22,8 +22,8 @@ def blastp_output(file_name):
     return pd.read_csv(blastp_file, sep='\t', comment='#', names=names)
 
 if __name__ == '__main__':
-    # Read single file for now
-    blastp_file = '../data/nih-output/20E6BPKN01R-Alignment.txt'
+    # Read all files
+    blastp_file = '../data/analyze-input/all.faa.blastp'
     df = blastp_output(blastp_file)
     # Filter by evalue
     df= df[df['evalue'] < 1e-5]
