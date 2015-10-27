@@ -3,6 +3,9 @@
 import pandas as pd
 import os
 
+# Disable table wrapping
+pd.set_option('expand_frame_repr', False)
+
 BLASTP_EXT = '.faa.blastp'
 
 def blastp_output(blastp_file):
