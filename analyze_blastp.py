@@ -46,6 +46,11 @@ if __name__ == '__main__':
     max_idx.sort()
     df_max = df.iloc[max_idx]
 
+    # Which homologous groups produce so many results?
+    h_grouped = df_max.groupby(['query homologs', 'query id'])
+    assert h_grouped.count()['subject id'].max() == 1
+    df_max[['query homologs', 'subject id']]
+
     # Write the subject ids to disk for samtools faidx
     arr_subj = df_max['subject id'].unique()
     s_subj = pd.Series(arr_subj)
