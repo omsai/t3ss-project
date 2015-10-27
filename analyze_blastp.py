@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-def blastp_output(file_name):
+def blastp_output(blastp_file):
     '''Read output from NIH BLAST+ `blastp` command-line program run with
     the `-outfmt 7` option.
 
