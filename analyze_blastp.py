@@ -45,3 +45,9 @@ if __name__ == '__main__':
     max_idx = q_grouped['bit score'].idxmax().values
     max_idx.sort()
     df_max = df.iloc[max_idx]
+
+    # Write the subject ids to disk for samtools faidx
+    arr_subj = df_max['subject id'].unique()
+    s_subj = pd.Series(arr_subj)
+    s_subj.to_csv('../data/analyze-output/subject_ids.ref',
+                  header=False, index=False)
