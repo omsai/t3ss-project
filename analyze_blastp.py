@@ -40,9 +40,8 @@ if __name__ == '__main__':
         df = pd.concat([df, df_homologs])
     # Re-enumerate the index
     df = df.reset_index()
-    # Filter by evalue
-    df_filtered = df[df['evalue'] < 1e-5]
-    # Filter by max bit score in each group
-    grouped = df_filtered.groupby('query id')
-    max_idx = grouped['bit score'].idxmax().values
+    # Get the best hit of each query
+    q_grouped = df.groupby('query id')
+    max_idx = q_grouped['bit score'].idxmax().values
+    max_idx.sort()
     df_max = df.iloc[max_idx]
