@@ -12,4 +12,4 @@ ls ${in_dir}/*.faa | \
 	--jobs 50% \
 	--joblog ${log_dir}/parallel-mafft.log \
 	--resume-failed \
-	mafft "> ${out_dir}/{/.}.mafft"
+	mafft "{} > ${out_dir}/{/.}.mafft"
