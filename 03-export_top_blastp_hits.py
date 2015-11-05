@@ -2,7 +2,6 @@
 
 from blastplus import BlastProcessor, BLASTP_OUTPUT_FILE
 
-# Read each file, adding a homologous group column
 bp = BlastProcessor(BLASTP_OUTPUT_FILE)
 
 # Write the subject ids to disk for sequence retrieval
