@@ -1,0 +1,10 @@
+# Log dir for GNU Parallel
+log/
+
+# Temp files for GNU Emacs
+*~
+\#*\#
+\.\#*
+
+# Compiled Python files
+*.pyc
