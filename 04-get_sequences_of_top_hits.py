@@ -42,5 +42,6 @@ with open(db_file, 'rU') as f:
                 active_sequence_list = list(matching_sequence_ids)
                 active_sequence_list.sort()
                 active_sequence_id = '_'.join(active_sequence_list)
+                sequence += [line]
         elif active_sequence_id != None:
             sequence += [line]
