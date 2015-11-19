@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''Read and process blastp output file.'''
 
 from blastplus import BlastProcessor, BLASTP_OUTPUT_FILE

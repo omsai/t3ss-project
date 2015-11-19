@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''Test trees for monophily.'''
 DEBUG = False
 TREES_GLOB='../data/fasttree-output/*.fasttree'

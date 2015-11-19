@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''Create sequence group files for alignment.  Each will have the
 original homologous group sequences, as well as all their matching
 subject id sequences.

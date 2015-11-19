@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''samtools faidx [...] on our lab server crashes due to high memory
 usage.  Instead of using samtools, we can directly read the nr text
 file directly using `xreadlines()` to conserve memory.
