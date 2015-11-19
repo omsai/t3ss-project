@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 '''Test trees for monophily.'''
 DEBUG = False
-TREES_GLOB='../data/fasttree-output/*.fasttree'
 TREE_FORMAT='newick'
 
 import Bio.Phylo as phy
 from blastplus import BlastProcessor, BLASTP_OUTPUT_FILE
-import glob
+import os
+TREE_DIR = '../data/fasttree-output/'
 
 # Read all the files in as trees
-files = glob.glob(TREES_GLOB)
+filenames = os.listdir(TREE_DIR)
+files = map(os.path.join, [TREE_DIR] * len(filenames), filenames)
 trees = map(phy.read, files, [TREE_FORMAT] * len(files))
 
 # Read Aeromonas names to be compared in tree terminals for monophily

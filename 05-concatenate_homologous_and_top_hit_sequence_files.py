@@ -5,19 +5,18 @@ subject id sequences.
 
 '''
 from blastplus import BlastProcessor, BLASTP_OUTPUT_FILE
-import glob
 import os
 import pandas as pd
 
-QUERY_FILE_GLOB = '../data/blastp-input/*.faa'
-QUERY_DIR = os.path.dirname(QUERY_FILE_GLOB)
+QUERY_DIR = '../data/blastp-input/'
 SUBJ_DIR = '../data/analyze-output/'
 ALIGN_DIR = '../data/mafft-input/'
 
 # Create a DataFrame of the filenames with their homologous sequences
 columns = {'filename', 'query id'}
 df_queries = pd.DataFrame(columns=columns)
-query_files = glob.glob(QUERY_FILE_GLOB)
+query_filenames = os.listdir(QUERY_DIR)
+query_files = [os.path.join(QUERY_DIR, filename) for filename in query_filenames]
 COMMENT = '>'
 for query_file in query_files:
     with open(query_file, 'rU') as f:
