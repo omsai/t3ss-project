@@ -29,15 +29,61 @@ command-line program output.
                     break
         # Read in the file_name.
         self.df = pd.read_csv(blastp_file, sep='\t', comment='#', names=names)
+        # Add alignment fraction column.
+        self.df['query coverage'] = (self.df['s. end'] - self.df['s. start']) \
+                                        / self.df['alignment length']
 
-    def top_hits(self):
-        # Get the best hit of each query
-        q_grouped = self.df.groupby('query id')
-        max_idx = q_grouped['bit score'].idxmax().values
-        max_idx.sort()
-        return self.df.iloc[max_idx]
+    def top_hits(self,
+                 align_frac=0.5,
+                 top_identity_cutoff=0.5,
+                 top_bitscore_frac=0.85):
+        '''Return best hits of each query of homologous proteins.
+
+        Parameters
+	----------
+        align_frac : float (0 to 1)
+	    Filter hits greater than ((end - start) / alignment_len).
+        top_identity_cutoff : float (0 to 1)
+	    Filter out groups with top hit bitscores below this
+	    fraction.
+        top_bitscore_frac : float (0 to 1)
+	    Filter query group members by this fraction of their top
+	    hit bitscore.
+
+        Returns
+        -------
+        DataFrame
+
+        '''
+        # Filter all hits by query coverage.
+        mask_coverage = self.df['query coverage'] >= align_frac
+
+        # Filter group members by top hit bitscore.
+        top_hit_bitscores = self.df.groupby('query id')[['query id', 'bit score']].head(1)
+        bitscore_min = top_hit_bitscores.set_index('query id') * top_bitscore_frac
+        df2 = self.df.set_index(['query id', 'subject id'])
+        # See http://stackoverflow.com/a/12463255 and
+        # http://stackoverflow.com/a/27865433
+        bitscore_min = bitscore_min.reindex(df2.index, level=0)
+        mask_bitscore = self.df['bit score'] >= bitscore_min['bit score']
+
+        # Filter group members by top hit identity percent.
+        df_identity = self.df.groupby('query id').filter(
+            lambda x: x['% identity'].head(1) > top_identity_cutoff * 100,
+            dropna=False)
+        mask_identity = self.df.isin(df_identity)['% identity']
+
+        # Apply all filters
+        mask = mask_coverage & mask_bitscore & mask_identity
+        top_idx = mask[mask].index.values
+        top_idx.sort()
+        return self.df.iloc[top_idx]
 
     def uniq_hits(self):
         df_max = self.top_hits()
         arr_subj = df_max['subject id'].unique()
         return pd.Series(arr_subj)
+
+
+if __name__ == '__main__':
+    bp = BlastProcessor(BLASTP_OUTPUT_FILE)
