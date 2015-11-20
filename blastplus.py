@@ -29,20 +29,20 @@ command-line program output.
                     break
         # Read in the file_name.
         self.df = pd.read_csv(blastp_file, sep='\t', comment='#', names=names)
-        # Add alignment fraction column.
+        # Add query coverage column.
         self.df['query coverage'] = (self.df['s. end'] - self.df['s. start']) \
-                                        / self.df['alignment length']
+                                        / self.df['query length']
 
     def top_hits(self,
-                 align_frac=0.5,
+                 querylen_frac=0.5,
                  top_identity_cutoff=0.5,
                  top_bitscore_frac=0.85):
         '''Return best hits of each query of homologous proteins.
 
         Parameters
 	----------
-        align_frac : float (0 to 1)
-	    Filter hits greater than ((end - start) / alignment_len).
+        querylen_frac : float (0 to 1)
+	    Filter hits greater than ((end - start) / querylen).
         top_identity_cutoff : float (0 to 1)
 	    Filter out groups with top hit bitscores below this
 	    fraction.
@@ -56,7 +56,7 @@ command-line program output.
 
         '''
         # Filter all hits by query coverage.
-        mask_coverage = self.df['query coverage'] >= align_frac
+        mask_coverage = self.df['query coverage'] >= querylen_frac
 
         # Filter group members by top hit bitscore.
         top_hit_bitscores = self.df.groupby('query id')[['query id', 'bit score']].head(1)
